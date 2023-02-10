@@ -1,0 +1,61 @@
+CREATE TABLE `user` (
+	`user_idx`	int(11)	NOT NULL,
+	`user_id`	varchar(20)	NULL,
+	`user_pw`	varchar(50)	NULL,
+	`email`	varchar(50)	NULL,
+	`role`	varchar(10)	NULL,
+	`create_date`	TimeStamp	NULL
+);
+
+CREATE TABLE `board` (
+	`board_idx`	int(11)	NOT NULL,
+	`user_idx`	int(11)	NOT NULL,
+	`title`	varchar(100)	NULL,
+	`content`	text	NULL,
+	`count`	int(50)	NULL,
+	`create_date`	Timestamp	NULL
+);
+
+CREATE TABLE `reply` (
+	`reply_idx`	int(11)	NOT NULL,
+	`board_idx`	int(11)	NOT NULL,
+	`user_idx`	int(11)	NOT NULL,
+	`content`	varchar(200)	NULL,
+	`create_date`	Timestamp	NULL
+);
+
+ALTER TABLE `user` ADD CONSTRAINT `PK_USER` PRIMARY KEY (
+	`user_idx`
+);
+
+ALTER TABLE `board` ADD CONSTRAINT `PK_BOARD` PRIMARY KEY (
+	`board_idx`,
+	`user_idx`
+);
+
+ALTER TABLE `reply` ADD CONSTRAINT `PK_REPLY` PRIMARY KEY (
+	`reply_idx`,
+	`board_idx`,
+	`user_idx`
+);
+
+ALTER TABLE `board` ADD CONSTRAINT `FK_user_TO_board_1` FOREIGN KEY (
+	`user_idx`
+)
+REFERENCES `user` (
+	`user_idx`
+);
+
+ALTER TABLE `reply` ADD CONSTRAINT `FK_board_TO_reply_1` FOREIGN KEY (
+	`board_idx`
+)
+REFERENCES `board` (
+	`board_idx`
+);
+
+ALTER TABLE `reply` ADD CONSTRAINT `FK_user_TO_reply_1` FOREIGN KEY (
+	`user_idx`
+)
+REFERENCES `user` (
+	`user_idx`
+);
